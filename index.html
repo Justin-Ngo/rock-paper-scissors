@@ -1,0 +1,101 @@
+<!-- HTML 5  -->
+<!DOCTYPE html>
+<html lang="en">
+	<script type="text/javascript">
+		const choices = ["Rock", "Paper", "Scissors"]
+		
+		const weaponsObj = {
+			Rock: {beats: "Scissors"},
+			Paper: {beats: "Rock"},
+			Scissors: {beats: "Paper"}
+		}
+
+		function computerPlay(){
+			// const randChoices = choices[Math.floor(Math.random() * choices.length)]
+			let randChoices = choices[Math.random() * choices.length>>0];
+			return randChoices;
+		}
+
+		function playRound(playerSelection, computerSelection){
+			
+			let results;
+			// Note: You can also call object with dot method. I.e. weaponsObj.Paper.beats === computerSelection
+			// I used weaponsObj["string"] here (bracket notation, see object property accessors)
+			// Short is that if if property name has space, hypen or starts with Number
+			// anything in [] is converted to string
+			if (weaponsObj[playerSelection].beats === computerSelection) {
+				// for ES6 you can use console.log('story ${name} story');
+				// Dollar ($) Identifier is a shortcut to document.getElementById
+				console.log("You Win! %s beats %s", playerSelection, computerSelection);
+				results = 1;
+			}
+			else if (weaponsObj[computerSelection].beats === playerSelection){
+				console.log("You Lose! %s beats %s", computerSelection, playerSelection);
+				results = 2;
+			}
+			else {
+				console.log("Its a tie!");
+				results = 0;
+			}
+			
+			return results;
+		}
+
+		// Main 
+		function game(){
+			console.log("Best of 5!");
+			// let playerScore, computerScore = 0;
+			// doing this way creates playerScore = undefined
+
+			let playerScore = 0;
+			let computerScore = 0;
+
+			for (let i = 0; i < 5; i++){
+				let score = 0;
+				while (!score) {
+					let playerSelection = window.prompt("Enter " + choices);
+					//score = playRound(playerSelection, computerPlay());
+					if (playerSelection != null){
+						playerSelection = playerSelection.charAt(0).toUpperCase() + playerSelection.substring(1).toLowerCase();
+						if (choices.includes(playerSelection)){
+							// Can't use 'in' operator here cause it returns T/F if there is a specified property in an object. Not used for arrays
+							// nor is this a prop in object
+							// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/in
+							score = playRound(playerSelection, computerPlay());
+						}
+						else {
+							console.log("please enter choices given");
+						}
+					}
+					else {
+						// if you don't care and just want an error, just type nonsense like fail; or humanSucks;
+						// https://stackoverflow.com/questions/9298839/is-it-possible-to-stop-javascript-execution
+						throw new Error("Human doesn't want to play, LOL")
+					}
+					
+				}
+				if (score === 1){
+					playerScore += 1;
+				}
+				else {
+					computerScore += 1;
+				}
+			}
+			// Since round is an odd number there is no error checking to see if a tie can occur
+			if (playerScore > computerScore){
+				console.log("You Win! Until next time human...")
+			}
+			else {
+				console.log("You Lose! I am the master race...")
+			}
+		}
+
+	</script>
+	<head>
+		<title>Juyn's Rock Paper Scissors</title>
+		<meta charset="UTF-8">
+	</head>
+	<body onload="game();">
+		
+	</body>
+</html>
